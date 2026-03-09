@@ -238,6 +238,92 @@ svg.chart{width:100%;height:100%;overflow:visible}
       <div class="chart-wrap" id="sector-chart"></div>
     </div>
   </div>
+
+  <!-- PROJECTION WIDGET -->
+  <div class="card" style="margin-top:18px">
+    <div class="card-header">
+      <div class="card-title">Goal Projection</div>
+      <span style="font-size:10px;color:var(--muted)">Compound growth calculator</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+      <!-- INPUTS -->
+      <div style="padding:20px;border-right:1px solid var(--border)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="form-group">
+            <label class="form-label">Biweekly Contribution</label>
+            <div style="position:relative">
+              <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px">$</span>
+              <input class="form-input" id="proj-contribution" type="number" step="any" value="1130.58" oninput="calcProjection()" style="padding-left:22px">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Annual Return %</label>
+            <div style="position:relative">
+              <input class="form-input" id="proj-rate" type="number" step="any" value="8" oninput="calcProjection()" style="padding-right:22px">
+              <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px">%</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Target Amount</label>
+            <div style="position:relative">
+              <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px">$</span>
+              <input class="form-input" id="proj-target" type="number" step="any" value="1000000" oninput="calcProjection()" style="padding-left:22px">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Current Portfolio</label>
+            <div style="position:relative">
+              <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px">$</span>
+              <input class="form-input" id="proj-current" type="number" step="any" value="" placeholder="Auto" oninput="calcProjection()" style="padding-left:22px">
+            </div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.6">
+          Leave "Current Portfolio" blank to use your live portfolio value automatically.
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:var(--bg);border:1px solid var(--border);padding:14px">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:6px">Time to Goal</div>
+            <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--green)" id="proj-years">—</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:3px" id="proj-years-sub">—</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);padding:14px">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:6px">Target Date</div>
+            <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--bright)" id="proj-date">—</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:3px" id="proj-date-sub">—</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);padding:14px">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:6px">Total Contributed</div>
+            <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--bright)" id="proj-contributed">—</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);padding:14px">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:6px">Growth Earned</div>
+            <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--gold)" id="proj-growth">—</div>
+          </div>
+        </div>
+
+        <!-- PROGRESS BAR -->
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:5px">
+            <span>Current</span><span id="proj-progress-pct">0%</span><span>Target</span>
+          </div>
+          <div style="height:6px;background:var(--border);border-radius:3px">
+            <div id="proj-progress-bar" style="height:100%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:3px;transition:width .5s;width:0%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px">
+            <span id="proj-current-display">—</span><span id="proj-target-display">—</span>
+          </div>
+        </div>
+
+        <!-- MILESTONE TABLE -->
+        <div id="proj-milestones" style="border-top:1px solid var(--border);padding-top:12px"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ADD/EDIT MODAL -->
@@ -508,6 +594,106 @@ function renderAll() {
   renderAccounts();
   renderHistory();
   renderSectors(rows);
+  calcProjection();
+}
+
+// ═══════════════════════════════════════
+//  PROJECTION CALCULATOR
+// ═══════════════════════════════════════
+function calcProjection() {
+  const annualRate   = parseFloat(document.getElementById('proj-rate').value) / 100;
+  const contribution = parseFloat(document.getElementById('proj-contribution').value);
+  const target       = parseFloat(document.getElementById('proj-target').value);
+  const manualCurrent = parseFloat(document.getElementById('proj-current').value);
+
+  // Use live portfolio value if no manual override
+  const allRows = computeRows('all');
+  const liveVal = allRows.reduce((s, r) => s + toCAD(r.value, r.currency), 0);
+  const current = (!isNaN(manualCurrent) && manualCurrent > 0) ? manualCurrent : liveVal;
+
+  if (!annualRate || !contribution || !target || isNaN(current)) return;
+
+  // Biweekly rate
+  const periodsPerYear = 26;
+  const ratePerPeriod  = annualRate / periodsPerYear;
+
+  // NPER formula: same as =NPER(rate, pmt, pv, fv, type)
+  // pmt = -contribution (paying in), pv = -current, fv = target, type = 0 (end of period)
+  // NPER = log((fv*r - pmt) / (pv*r + pmt)) / log(1+r)  [when r != 0]
+  let nPeriods;
+  if (ratePerPeriod === 0) {
+    nPeriods = (target - current) / contribution;
+  } else {
+    const r = ratePerPeriod;
+    const pmt = -contribution;
+    const pv  = -current;
+    const fv  = target;
+    nPeriods = Math.log((fv * r - pmt) / (pv * r + pmt)) / Math.log(1 + r);
+  }
+
+  if (!isFinite(nPeriods) || nPeriods <= 0) {
+    document.getElementById('proj-years').textContent = '—';
+    document.getElementById('proj-years-sub').textContent = 'Check inputs';
+    return;
+  }
+
+  const years       = nPeriods / periodsPerYear;
+  const totalYears  = Math.floor(years);
+  const remMonths   = Math.round((years - totalYears) * 12);
+  const totalContrib = contribution * nPeriods;
+  const growth      = target - current - totalContrib;
+
+  // Target date
+  const targetDate = new Date();
+  targetDate.setDate(targetDate.getDate() + Math.round(nPeriods * 14));
+
+  // Progress
+  const pct = Math.min(100, (current / target) * 100);
+
+  // Update UI
+  document.getElementById('proj-years').textContent     = totalYears + 'y ' + remMonths + 'm';
+  document.getElementById('proj-years-sub').textContent = Math.round(nPeriods) + ' biweekly periods';
+  document.getElementById('proj-date').textContent      = targetDate.toLocaleDateString('en-CA', { year:'numeric', month:'short' });
+  document.getElementById('proj-date-sub').textContent  = targetDate.getFullYear() - new Date().getFullYear() + ' years from now';
+  document.getElementById('proj-contributed').textContent = 'CA$' + fmt(totalContrib);
+  document.getElementById('proj-growth').textContent    = 'CA$' + fmt(Math.max(0, growth));
+  document.getElementById('proj-progress-pct').textContent = pct.toFixed(1) + '%';
+  document.getElementById('proj-progress-bar').style.width = pct + '%';
+  document.getElementById('proj-current-display').textContent = 'CA$' + fmt(current);
+  document.getElementById('proj-target-display').textContent  = 'CA$' + fmt(target);
+
+  // Milestones: 25%, 50%, 75%, 100%
+  const milestones = [0.25, 0.5, 0.75, 1.0].map(pct => {
+    const mTarget = target * pct;
+    if (mTarget <= current) return null;
+    let mPeriods;
+    if (ratePerPeriod === 0) {
+      mPeriods = (mTarget - current) / contribution;
+    } else {
+      const r = ratePerPeriod, pmt = -contribution, pv = -current, fv = mTarget;
+      mPeriods = Math.log((fv * r - pmt) / (pv * r + pmt)) / Math.log(1 + r);
+    }
+    if (!isFinite(mPeriods) || mPeriods <= 0) return null;
+    const mYears = mPeriods / periodsPerYear;
+    const mDate  = new Date(); mDate.setDate(mDate.getDate() + Math.round(mPeriods * 14));
+    return { label: (pct * 100) + '%', amount: mTarget, years: mYears, date: mDate };
+  }).filter(Boolean);
+
+  const ms = document.getElementById('proj-milestones');
+  if (milestones.length === 0) {
+    ms.innerHTML = '<div style="font-size:11px;color:var(--green)">✓ Already past all milestones!</div>';
+    return;
+  }
+  ms.innerHTML = `
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px">Milestones</div>
+    <div style="display:grid;grid-template-columns:repeat(${milestones.length},1fr);gap:8px">
+      ${milestones.map(m => `
+        <div style="background:var(--bg);border:1px solid var(--border);padding:10px;text-align:center">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:3px">${m.label} · CA$${Math.round(m.amount/1000)}K</div>
+          <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--bright)">${m.date.toLocaleDateString('en-CA',{year:'numeric',month:'short'})}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">${Math.floor(m.years)}y ${Math.round((m.years%1)*12)}m</div>
+        </div>`).join('')}
+    </div>`;
 }
 
 // ═══════════════════════════════════════
