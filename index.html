@@ -601,82 +601,87 @@ function renderAll() {
 //  PROJECTION CALCULATOR
 // ═══════════════════════════════════════
 function calcProjection() {
-  const annualRate   = parseFloat(document.getElementById('proj-rate').value) / 100;
-  const contribution = parseFloat(document.getElementById('proj-contribution').value);
-  const target       = parseFloat(document.getElementById('proj-target').value);
+  const annualRate    = parseFloat(document.getElementById('proj-rate').value) / 100;
+  const contribution  = parseFloat(document.getElementById('proj-contribution').value);
+  const target        = parseFloat(document.getElementById('proj-target').value);
   const manualCurrent = parseFloat(document.getElementById('proj-current').value);
 
-  // Use live portfolio value if no manual override
-  const allRows = computeRows('all');
-  const liveVal = allRows.reduce((s, r) => s + toCAD(r.value, r.currency), 0);
-  const current = (!isNaN(manualCurrent) && manualCurrent > 0) ? manualCurrent : liveVal;
+  // Use live portfolio CAD value if no manual override
+  let current = 0;
+  if (!isNaN(manualCurrent) && manualCurrent > 0) {
+    current = manualCurrent;
+  } else if (portfolio?.holdings?.length > 0) {
+    const allRows = computeRows('all');
+    current = allRows.reduce((s, r) => s + toCAD(r.value, r.currency), 0);
+  }
 
-  if (!annualRate || !contribution || !target || isNaN(current)) return;
+  // Silently bail if inputs aren't ready yet
+  if (isNaN(annualRate) || annualRate <= 0 || isNaN(contribution) || contribution <= 0 ||
+      isNaN(target) || target <= 0 || current < 0) return;
 
-  // Biweekly rate
   const periodsPerYear = 26;
-  const ratePerPeriod  = annualRate / periodsPerYear;
+  const r   = annualRate / periodsPerYear;
+  // NPER(r, -contribution, -current, target, 0)
+  const pmt = contribution;   // we add each period
+  const pv  = current;        // what we have now
+  const fv  = target;
 
-  // NPER formula: same as =NPER(rate, pmt, pv, fv, type)
-  // pmt = -contribution (paying in), pv = -current, fv = target, type = 0 (end of period)
-  // NPER = log((fv*r - pmt) / (pv*r + pmt)) / log(1+r)  [when r != 0]
   let nPeriods;
-  if (ratePerPeriod === 0) {
-    nPeriods = (target - current) / contribution;
+  if (r === 0) {
+    nPeriods = (fv - pv) / pmt;
   } else {
-    const r = ratePerPeriod;
-    const pmt = -contribution;
-    const pv  = -current;
-    const fv  = target;
-    nPeriods = Math.log((fv * r - pmt) / (pv * r + pmt)) / Math.log(1 + r);
+    // Standard NPER derivation: n = log((fv*r + pmt) / (pv*r + pmt)) / log(1+r)
+    const num = fv * r + pmt;
+    const den = pv * r + pmt;
+    if (den <= 0 || num <= 0 || num / den <= 0) {
+      document.getElementById('proj-years').textContent     = '∞';
+      document.getElementById('proj-years-sub').textContent = 'Contribution too small';
+      return;
+    }
+    nPeriods = Math.log(num / den) / Math.log(1 + r);
   }
 
-  if (!isFinite(nPeriods) || nPeriods <= 0) {
-    document.getElementById('proj-years').textContent = '—';
-    document.getElementById('proj-years-sub').textContent = 'Check inputs';
-    return;
-  }
+  if (!isFinite(nPeriods) || nPeriods <= 0) return;
 
-  const years       = nPeriods / periodsPerYear;
-  const totalYears  = Math.floor(years);
-  const remMonths   = Math.round((years - totalYears) * 12);
-  const totalContrib = contribution * nPeriods;
-  const growth      = target - current - totalContrib;
+  const years        = nPeriods / periodsPerYear;
+  const totalYears   = Math.floor(years);
+  const remMonths    = Math.round((years - totalYears) * 12);
+  const totalContrib = pmt * nPeriods;
+  const growth       = fv - pv - totalContrib;
 
-  // Target date
   const targetDate = new Date();
   targetDate.setDate(targetDate.getDate() + Math.round(nPeriods * 14));
+  const pct = Math.min(100, (pv / fv) * 100);
 
-  // Progress
-  const pct = Math.min(100, (current / target) * 100);
-
-  // Update UI
-  document.getElementById('proj-years').textContent     = totalYears + 'y ' + remMonths + 'm';
-  document.getElementById('proj-years-sub').textContent = Math.round(nPeriods) + ' biweekly periods';
-  document.getElementById('proj-date').textContent      = targetDate.toLocaleDateString('en-CA', { year:'numeric', month:'short' });
-  document.getElementById('proj-date-sub').textContent  = targetDate.getFullYear() - new Date().getFullYear() + ' years from now';
+  document.getElementById('proj-years').textContent      = totalYears + 'y ' + remMonths + 'm';
+  document.getElementById('proj-years-sub').textContent  = Math.round(nPeriods) + ' biweekly periods';
+  document.getElementById('proj-date').textContent       = targetDate.toLocaleDateString('en-CA', { year:'numeric', month:'short' });
+  document.getElementById('proj-date-sub').textContent   = (targetDate.getFullYear() - new Date().getFullYear()) + ' years from now';
   document.getElementById('proj-contributed').textContent = 'CA$' + fmt(totalContrib);
-  document.getElementById('proj-growth').textContent    = 'CA$' + fmt(Math.max(0, growth));
+  document.getElementById('proj-growth').textContent     = 'CA$' + fmt(Math.max(0, growth));
   document.getElementById('proj-progress-pct').textContent = pct.toFixed(1) + '%';
-  document.getElementById('proj-progress-bar').style.width = pct + '%';
-  document.getElementById('proj-current-display').textContent = 'CA$' + fmt(current);
-  document.getElementById('proj-target-display').textContent  = 'CA$' + fmt(target);
+  document.getElementById('proj-progress-bar').style.width  = pct + '%';
+  document.getElementById('proj-current-display').textContent = 'CA$' + fmt(pv);
+  document.getElementById('proj-target-display').textContent  = 'CA$' + fmt(fv);
 
-  // Milestones: 25%, 50%, 75%, 100%
-  const milestones = [0.25, 0.5, 0.75, 1.0].map(pct => {
-    const mTarget = target * pct;
-    if (mTarget <= current) return null;
+  // Milestones
+  const milestones = [0.25, 0.5, 0.75, 1.0].map(frac => {
+    const mFv = fv * frac;
+    if (mFv <= pv) return null;
     let mPeriods;
-    if (ratePerPeriod === 0) {
-      mPeriods = (mTarget - current) / contribution;
+    if (r === 0) {
+      mPeriods = (mFv - pv) / pmt;
     } else {
-      const r = ratePerPeriod, pmt = -contribution, pv = -current, fv = mTarget;
-      mPeriods = Math.log((fv * r - pmt) / (pv * r + pmt)) / Math.log(1 + r);
+      const num = mFv * r + pmt;
+      const den = pv  * r + pmt;
+      if (den <= 0 || num <= 0) return null;
+      mPeriods = Math.log(num / den) / Math.log(1 + r);
     }
     if (!isFinite(mPeriods) || mPeriods <= 0) return null;
     const mYears = mPeriods / periodsPerYear;
-    const mDate  = new Date(); mDate.setDate(mDate.getDate() + Math.round(mPeriods * 14));
-    return { label: (pct * 100) + '%', amount: mTarget, years: mYears, date: mDate };
+    const mDate  = new Date();
+    mDate.setDate(mDate.getDate() + Math.round(mPeriods * 14));
+    return { label: Math.round(frac * 100) + '%', amount: mFv, years: mYears, date: mDate };
   }).filter(Boolean);
 
   const ms = document.getElementById('proj-milestones');
