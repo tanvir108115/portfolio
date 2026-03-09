@@ -16,13 +16,13 @@
       "account": "TFSA"
     },
     {
-      "ticker": "XIT.TO",
-      "name": "iShares S&P/TSX Capped IT",
+      "ticker": "XIT",
+      "name": "iShares S&P/TSX Capped Information Tech Idx ETF",
       "sector": "Technology ETF",
+      "account": "TFSA",
       "shares": 23,
-      "buyPrice": 64.8,
-      "currency": "CAD",
-      "account": "TFSA"
+      "buyPrice": 67.6,
+      "currency": "USD"
     },
     {
       "ticker": "ZGLD.TO",
