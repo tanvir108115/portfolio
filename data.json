@@ -145,10 +145,10 @@
       "ticker": "AAPL",
       "name": "Apple Inc",
       "sector": "Tech",
+      "account": "FHSA",
       "shares": 15.7313,
-      "buyPrice": 252.7965248,
-      "currency": "USD",
-      "account": "FHSA"
+      "buyPrice": 186.1988,
+      "currency": "USD"
     },
     {
       "ticker": "SHOP.TO",
