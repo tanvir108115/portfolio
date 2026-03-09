@@ -243,7 +243,10 @@ svg.chart{width:100%;height:100%;overflow:visible}
   <div class="card" style="margin-top:18px">
     <div class="card-header">
       <div class="card-title">Goal Projection</div>
-      <span style="font-size:10px;color:var(--muted)">Compound growth calculator</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:10px;color:var(--muted)">Compound growth calculator</span>
+        <button class="btn primary" onclick="saveProjection()" style="padding:4px 12px">↑ Save</button>
+      </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
       <!-- INPUTS -->
@@ -414,6 +417,14 @@ async function loadData() {
     // Deduplicate accounts list
     portfolio.accounts = ['TFSA', 'FHSA', 'RRSP', 'Regular'];
     document.getElementById('last-updated').textContent = 'Updated: ' + (portfolio.lastUpdated || '—');
+    // Restore saved projection settings
+    if (portfolio.projection) {
+      const p = portfolio.projection;
+      if (p.contribution) document.getElementById('proj-contribution').value = p.contribution;
+      if (p.rate)         document.getElementById('proj-rate').value         = p.rate;
+      if (p.target)       document.getElementById('proj-target').value       = p.target;
+      if (p.current)      document.getElementById('proj-current').value      = p.current;
+    }
   } catch(e) {
     showToast('Could not load data.json', 'error');
     portfolio = { holdings: [], history: [], accounts: ['TFSA','FHSA','RRSP','Regular'], lastUpdated: '—' };
@@ -1038,7 +1049,23 @@ function saveGHConfig(){
   refreshPrices();
 }
 
-async function saveToGitHub(){
+function saveProjection() {
+  const contribution = parseFloat(document.getElementById('proj-contribution').value);
+  const rate         = parseFloat(document.getElementById('proj-rate').value);
+  const target       = parseFloat(document.getElementById('proj-target').value);
+  const current      = parseFloat(document.getElementById('proj-current').value);
+
+  portfolio.projection = {
+    contribution: isNaN(contribution) ? undefined : contribution,
+    rate:         isNaN(rate)         ? undefined : rate,
+    target:       isNaN(target)       ? undefined : target,
+    current:      isNaN(current)      ? undefined : current,
+  };
+  portfolio.lastUpdated = new Date().toISOString().slice(0, 10);
+  saveToGitHub();
+}
+
+
   const cfg=getGHConfig();
   if(!cfg?.token){showToast('GitHub not configured — open ⚙ GitHub to set up','info');return;}
   try{
