@@ -1065,7 +1065,7 @@ function saveProjection() {
   saveToGitHub();
 }
 
-
+async function saveToGitHub(){
   const cfg=getGHConfig();
   if(!cfg?.token){showToast('GitHub not configured — open ⚙ GitHub to set up','info');return;}
   try{
