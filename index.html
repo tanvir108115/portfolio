@@ -788,6 +788,7 @@ function renderTable(rows) {
                        : r.price;
 
     const tr = document.createElement('tr');
+    if (!r.livePrice) tr.style.background = 'rgba(255,77,109,0.06)';
     tr.innerHTML = `
       <td><div class="ticker-cell">
         <div class="ticker-dot" style="background:${color}"></div>
