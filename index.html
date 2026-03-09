@@ -218,7 +218,7 @@ svg.chart{width:100%;height:100%;overflow:visible}
         </div>
       </div>
       <table><thead><tr>
-        <th>Ticker</th><th>Shares</th><th>Price</th><th>Invested</th><th>Value</th><th>Gain/Loss</th><th>Alloc</th><th></th>
+        <th>Ticker</th><th>Shares</th><th>Buy Price</th><th>Mkt Price</th><th>Invested</th><th>Value</th><th>Gain/Loss</th><th>Alloc</th><th></th>
       </tr></thead><tbody id="table-body"></tbody></table>
     </div>
     <div class="side">
@@ -485,12 +485,12 @@ function computeRows(filterAccount) {
 
   const rows = Object.values(map).map(h => {
     const livePrice = prices[h.ticker]?.price || null;
-    const price     = livePrice || h.buyPrice;
-    const invested  = h.shares * h.buyPrice;
-    const value     = h.shares * price;
+    const currentPrice = livePrice || h.buyPrice;  // for value calc only
+    const invested  = h.shares * h.buyPrice;        // always use buy price
+    const value     = h.shares * currentPrice;      // use live if available
     const gain      = invested > 0 ? ((value - invested) / invested * 100) : 0;
     const change    = prices[h.ticker]?.changePct || null;
-    return { ...h, livePrice, price, invested, value, gain, change };
+    return { ...h, livePrice, price: currentPrice, invested, value, gain, change };
   });
 
   const totalValueCAD = rows.reduce((s, r) => s + toCAD(r.value, r.currency), 0);
@@ -550,9 +550,6 @@ function renderTable(rows) {
     const color = COLORS[i % COLORS.length];
     const dispInv   = toDisplay(r.invested, r.currency);
     const dispVal   = toDisplay(r.value, r.currency);
-    const dispPrice = currentCurrency === 'USD' && r.currency === 'CAD' ? r.price / usdcad
-                    : currentCurrency === 'CAD' && r.currency === 'USD' ? r.price * usdcad
-                    : r.price;
     const barW = Math.min(50, Math.round(r.alloc / 40 * 50));
     const liveDot = r.livePrice ? '<span class="live-dot">●</span>' : '<span class="stale-dot">○</span>';
     const changeStr = r.change != null ? `<span class="${r.change>=0?'change-up':'change-dn'}">${r.change>=0?'+':''}${r.change.toFixed(2)}%</span>` : '';
@@ -563,6 +560,13 @@ function renderTable(rows) {
       ? `<button class="btn" style="padding:2px 8px;font-size:10px" onclick='openEditModal(${r._idx})'>✎</button>`
       : '';
 
+    const dispBuyPrice = currentCurrency === 'USD' && r.currency === 'CAD' ? r.buyPrice / usdcad
+                       : currentCurrency === 'CAD' && r.currency === 'USD' ? r.buyPrice * usdcad
+                       : r.buyPrice;
+    const dispMktPrice = currentCurrency === 'USD' && r.currency === 'CAD' ? r.price / usdcad
+                       : currentCurrency === 'CAD' && r.currency === 'USD' ? r.price * usdcad
+                       : r.price;
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><div class="ticker-cell">
@@ -571,7 +575,8 @@ function renderTable(rows) {
         <div class="t-meta">${acctBadge}<span>${r.sector||''}</span></div></div>
       </div></td>
       <td>${r.shares % 1 === 0 ? r.shares : r.shares.toFixed(4)}</td>
-      <td>${liveDot}${sym}${fmtP(dispPrice)} ${changeStr}</td>
+      <td>${sym}${fmtP(dispBuyPrice)}</td>
+      <td>${liveDot}${sym}${fmtP(dispMktPrice)} ${changeStr}</td>
       <td>${sym}${fmt(dispInv)}</td>
       <td>${sym}${fmt(dispVal)}</td>
       <td class="${r.gain>=0?'pos':'neg'}">${r.gain>=0?'+':''}${r.gain.toFixed(2)}%</td>
