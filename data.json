@@ -91,10 +91,10 @@
       "ticker": "VIG",
       "name": "Vanguard Dividend Apprec.",
       "sector": "ETF",
+      "account": "TFSA",
       "shares": 16.1594,
-      "buyPrice": 266.3271998,
-      "currency": "USD",
-      "account": "TFSA"
+      "buyPrice": 196.1649,
+      "currency": "USD"
     },
     {
       "ticker": "CSU.TO",
