@@ -439,6 +439,10 @@ async function loadFromSheets() {
       type: inferType(h.ticker),
     }));
 
+    // Use grand totals from Total sheet if available
+    if (data.grandTotalValue)    window._grandTotalValue    = data.grandTotalValue;
+    if (data.grandTotalInvested) window._grandTotalInvested = data.grandTotalInvested;
+
     showStatus('ok', data.lastUpdated);
     renderAll();
   } catch (e) {
@@ -478,8 +482,8 @@ function renderAll() {
 }
 
 function renderKPIs() {
-  const totalInvested = holdings.reduce((s, h) => s + h.invested, 0);
-  const totalValue    = holdings.reduce((s, h) => s + h.value, 0);
+  const totalInvested = window._grandTotalInvested || holdings.reduce((s, h) => s + h.invested, 0);
+  const totalValue    = window._grandTotalValue    || holdings.reduce((s, h) => s + h.value, 0);
   const totalGain     = totalValue - totalInvested;
   const gainPct       = totalInvested > 0 ? (totalGain / totalInvested * 100) : 0;
   const profitable    = holdings.filter(h => h.gain >= 0).length;
