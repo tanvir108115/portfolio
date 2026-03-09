@@ -407,27 +407,45 @@ async function init() {
 // ═══════════════════════════════════════
 async function loadData() {
   try {
-    const res = await fetch('./data.json', { cache: 'no-store' });
+    // Always load from GitHub API — bypasses Pages CDN cache entirely
+    const cfg = getGHConfig();
+    if (cfg?.token && cfg?.user && cfg?.repo) {
+      const res = await fetch(
+        `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/data.json`,
+        { headers: { Authorization: `token ${cfg.token}`, Accept: 'application/vnd.github.v3+json' } }
+      );
+      if (res.ok) {
+        const meta = await res.json();
+        const raw = decodeURIComponent(escape(atob(meta.content.replace(/\n/g, ''))));
+        portfolio = JSON.parse(raw);
+        applyPortfolioDefaults();
+        return;
+      }
+    }
+    // Fallback: Pages URL (may be stale up to a few minutes after save)
+    const res = await fetch('./data.json?v=' + Date.now(), { cache: 'no-store' });
     if (!res.ok) throw new Error('data.json not found');
     portfolio = await res.json();
-    // Normalize: treat "TFSA wealthsimple" as "TFSA"
-    portfolio.holdings.forEach(h => {
-      if (h.account === 'TFSA wealthsimple') h.account = 'TFSA';
-    });
-    // Deduplicate accounts list
-    portfolio.accounts = ['TFSA', 'FHSA', 'RRSP', 'Regular'];
-    document.getElementById('last-updated').textContent = 'Updated: ' + (portfolio.lastUpdated || '—');
-    // Restore saved projection settings
-    if (portfolio.projection) {
-      const p = portfolio.projection;
-      if (p.contribution) document.getElementById('proj-contribution').value = p.contribution;
-      if (p.rate)         document.getElementById('proj-rate').value         = p.rate;
-      if (p.target)       document.getElementById('proj-target').value       = p.target;
-      if (p.current)      document.getElementById('proj-current').value      = p.current;
-    }
+    applyPortfolioDefaults();
   } catch(e) {
-    showToast('Could not load data.json', 'error');
+    showToast('Could not load data.json: ' + e.message, 'error');
     portfolio = { holdings: [], history: [], accounts: ['TFSA','FHSA','RRSP','Regular'], lastUpdated: '—' };
+    renderAccountFilters();
+  }
+}
+
+function applyPortfolioDefaults() {
+  portfolio.holdings.forEach(h => {
+    if (h.account === 'TFSA wealthsimple') h.account = 'TFSA';
+  });
+  portfolio.accounts = ['TFSA', 'FHSA', 'RRSP', 'Regular'];
+  document.getElementById('last-updated').textContent = 'Updated: ' + (portfolio.lastUpdated || '—');
+  if (portfolio.projection) {
+    const p = portfolio.projection;
+    if (p.contribution != null) document.getElementById('proj-contribution').value = p.contribution;
+    if (p.rate         != null) document.getElementById('proj-rate').value         = p.rate;
+    if (p.target       != null) document.getElementById('proj-target').value       = p.target;
+    if (p.current      != null) document.getElementById('proj-current').value      = p.current;
   }
   renderAccountFilters();
 }
