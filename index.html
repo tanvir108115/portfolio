@@ -318,13 +318,19 @@ async function init() {
 // ═══════════════════════════════════════
 async function loadData() {
   try {
-    const res = await fetch('./data.json?cb=' + Date.now());
+    const res = await fetch('./data.json', { cache: 'no-store' });
     if (!res.ok) throw new Error('data.json not found');
     portfolio = await res.json();
+    // Normalize: treat "TFSA wealthsimple" as "TFSA"
+    portfolio.holdings.forEach(h => {
+      if (h.account === 'TFSA wealthsimple') h.account = 'TFSA';
+    });
+    // Deduplicate accounts list
+    portfolio.accounts = ['TFSA', 'FHSA', 'RRSP', 'Regular'];
     document.getElementById('last-updated').textContent = 'Updated: ' + (portfolio.lastUpdated || '—');
   } catch(e) {
     showToast('Could not load data.json', 'error');
-    portfolio = { holdings: [], history: [], accounts: ['TFSA wealthsimple','TFSA','FHSA','RRSP','Regular'], lastUpdated: '—' };
+    portfolio = { holdings: [], history: [], accounts: ['TFSA','FHSA','RRSP','Regular'], lastUpdated: '—' };
   }
   renderAccountFilters();
 }
@@ -455,18 +461,25 @@ function toDisplay(amount, currency) {
 }
 
 function computeRows(filterAccount) {
-  // Merge duplicate ticker+account combos (multiple buy lots)
+  const isAll = filterAccount === 'all';
   const map = {};
+
   portfolio.holdings.forEach((h, idx) => {
-    if (filterAccount !== 'all' && h.account !== filterAccount) return;
-    const key = h.ticker + '||' + h.account;
+    const account = h.account === 'TFSA wealthsimple' ? 'TFSA' : h.account;
+    if (!isAll && account !== filterAccount) return;
+
+    // In All view: merge by ticker only (across all accounts)
+    // In account view: merge by ticker within that account
+    const key = isAll ? h.ticker : (h.ticker + '||' + account);
+
     if (!map[key]) {
-      map[key] = { ...h, _idx: idx };
+      map[key] = { ...h, account, _idx: idx, _accounts: [account] };
     } else {
       const e = map[key];
       const totalShares = e.shares + h.shares;
       e.buyPrice = (e.shares * e.buyPrice + h.shares * h.buyPrice) / totalShares;
       e.shares = totalShares;
+      if (!e._accounts.includes(account)) e._accounts.push(account);
     }
   });
 
@@ -543,7 +556,12 @@ function renderTable(rows) {
     const barW = Math.min(50, Math.round(r.alloc / 40 * 50));
     const liveDot = r.livePrice ? '<span class="live-dot">●</span>' : '<span class="stale-dot">○</span>';
     const changeStr = r.change != null ? `<span class="${r.change>=0?'change-up':'change-dn'}">${r.change>=0?'+':''}${r.change.toFixed(2)}%</span>` : '';
-    const acctBadge = currentFilter === 'all' ? `<span class="badge">${r.account.replace('TFSA wealthsimple','WS-T')}</span>` : '';
+    const acctBadge = currentFilter === 'all'
+      ? (r._accounts||[]).map(a => `<span class="badge">${a.replace('TFSA wealthsimple','TFSA')}</span>`).join('')
+      : '';
+    const editBtn = currentFilter !== 'all'
+      ? `<button class="btn" style="padding:2px 8px;font-size:10px" onclick='openEditModal(${r._idx})'>✎</button>`
+      : '';
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -560,7 +578,7 @@ function renderTable(rows) {
       <td><div class="alloc-wrap"><span>${r.alloc.toFixed(1)}%</span>
         <div class="alloc-bar"><div class="alloc-fill" style="width:${barW}px;background:${color}"></div></div>
       </div></td>
-      <td><button class="btn" style="padding:2px 8px;font-size:10px" onclick='openEditModal(${r._idx})'>✎</button></td>`;
+      <td>${editBtn}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -689,8 +707,8 @@ function renderAccountFilters() {
   (portfolio.accounts||[]).forEach(acc=>{
     const btn=document.createElement('button');
     btn.className='filter-btn';
-    btn.textContent=acc.replace('TFSA wealthsimple','WS-TFSA');
-    btn.onclick=()=>setFilter(acc,btn);
+    btn.textContent = acc;
+    btn.onclick = () => setFilter(acc, btn);
     c.appendChild(btn);
   });
 }
@@ -701,8 +719,7 @@ function setFilter(account, btn) {
   if(btn) btn.classList.add('active');
   else if(account==='all') document.getElementById('filter-all').classList.add('active');
   else document.querySelectorAll('#account-filters .filter-btn').forEach(b=>{
-    const name=b.textContent==='WS-TFSA'?'TFSA wealthsimple':b.textContent;
-    if(name===account) b.classList.add('active');
+    if(b.textContent===account) b.classList.add('active');
   });
   renderAll();
 }
@@ -760,10 +777,10 @@ function clearForm() {
 }
 
 function populateAccountSelect(selected) {
-  const sel=document.getElementById('f-account'); sel.innerHTML='';
-  (portfolio.accounts||[]).forEach(acc=>{
-    const opt=document.createElement('option'); opt.value=acc; opt.textContent=acc;
-    if(acc===selected) opt.selected=true;
+  const sel = document.getElementById('f-account'); sel.innerHTML = '';
+  ['TFSA','FHSA','RRSP','Regular'].forEach(acc => {
+    const opt = document.createElement('option'); opt.value = acc; opt.textContent = acc;
+    if (acc === selected) opt.selected = true;
     sel.appendChild(opt);
   });
 }

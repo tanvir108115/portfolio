@@ -1,6 +1,5 @@
 {
   "accounts": [
-    "TFSA wealthsimple",
     "TFSA",
     "FHSA",
     "RRSP",
@@ -14,7 +13,7 @@
       "shares": 2413,
       "buyPrice": 0.7919,
       "currency": "CAD",
-      "account": "TFSA wealthsimple"
+      "account": "TFSA"
     },
     {
       "ticker": "XIT.TO",
@@ -23,7 +22,7 @@
       "shares": 23,
       "buyPrice": 64.8,
       "currency": "CAD",
-      "account": "TFSA wealthsimple"
+      "account": "TFSA"
     },
     {
       "ticker": "ZGLD.TO",
@@ -32,7 +31,7 @@
       "shares": 84.0895,
       "buyPrice": 56.7,
       "currency": "CAD",
-      "account": "TFSA wealthsimple"
+      "account": "TFSA"
     },
     {
       "ticker": "TEC.TO",
@@ -41,7 +40,7 @@
       "shares": 117.1954,
       "buyPrice": 49.66,
       "currency": "CAD",
-      "account": "TFSA wealthsimple"
+      "account": "TFSA"
     },
     {
       "ticker": "DOL.TO",
@@ -50,7 +49,7 @@
       "shares": 6.0723,
       "buyPrice": 171.21,
       "currency": "CAD",
-      "account": "TFSA wealthsimple"
+      "account": "TFSA"
     },
     {
       "ticker": "XEQT.TO",
@@ -59,7 +58,7 @@
       "shares": 396.3436,
       "buyPrice": 38.97,
       "currency": "CAD",
-      "account": "TFSA wealthsimple"
+      "account": "TFSA"
     },
     {
       "ticker": "WELL.TO",
@@ -68,7 +67,7 @@
       "shares": 398.4416,
       "buyPrice": 4.38,
       "currency": "CAD",
-      "account": "TFSA wealthsimple"
+      "account": "TFSA"
     },
     {
       "ticker": "SPOT",
@@ -164,10 +163,10 @@
       "ticker": "SPOT",
       "name": "Spotify Technology",
       "sector": "Tech",
-      "account": "FHSA",
       "shares": 5,
-      "buyPrice": 369.4932,
-      "currency": "USD"
+      "buyPrice": 501.6498328,
+      "currency": "USD",
+      "account": "FHSA"
     },
     {
       "ticker": "PNG.V",
@@ -183,7 +182,7 @@
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
       "shares": 294,
-      "buyPrice": 38,
+      "buyPrice": 38.0,
       "currency": "CAD",
       "account": "RRSP"
     },
