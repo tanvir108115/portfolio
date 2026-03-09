@@ -25,13 +25,13 @@
       "currency": "USD"
     },
     {
-      "ticker": "ZGLD.TO",
-      "name": "BMO Gold Bullion ETF",
+      "ticker": "ZGLD",
+      "name": "BMO Gold Bullion Series Units ETF",
       "sector": "Cash",
+      "account": "TFSA",
       "shares": 84.0895,
-      "buyPrice": 56.7,
-      "currency": "CAD",
-      "account": "TFSA"
+      "buyPrice": 74.96,
+      "currency": "USD"
     },
     {
       "ticker": "TEC.TO",
