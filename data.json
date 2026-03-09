@@ -136,10 +136,10 @@
       "ticker": "VIG",
       "name": "Vanguard Dividend Apprec.",
       "sector": "ETF",
+      "account": "FHSA",
       "shares": 6.0202,
-      "buyPrice": 234.8987685,
-      "currency": "USD",
-      "account": "FHSA"
+      "buyPrice": 173.0161,
+      "currency": "USD"
     },
     {
       "ticker": "AAPL",
