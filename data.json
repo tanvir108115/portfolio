@@ -73,10 +73,10 @@
       "ticker": "SPOT",
       "name": "Spotify Technology",
       "sector": "Tech",
+      "account": "TFSA",
       "shares": 6,
-      "buyPrice": 503.69557,
-      "currency": "USD",
-      "account": "TFSA"
+      "buyPrice": 371,
+      "currency": "USD"
     },
     {
       "ticker": "AAPL",
