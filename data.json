@@ -163,10 +163,10 @@
       "ticker": "SPOT",
       "name": "Spotify Technology",
       "sector": "Tech",
+      "account": "FHSA",
       "shares": 5,
-      "buyPrice": 501.6498328,
-      "currency": "USD",
-      "account": "FHSA"
+      "buyPrice": 369.4932,
+      "currency": "USD"
     },
     {
       "ticker": "PNG",
