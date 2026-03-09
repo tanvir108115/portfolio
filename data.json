@@ -1,0 +1,36 @@
+{
+  "accounts": ["TFSA wealthsimple", "TFSA", "FHSA", "RRSP", "Regular"],
+  "holdings": [
+    { "ticker": "NANO.V",           "name": "Nano One Materials",        "sector": "Clean Tech",       "shares": 2413,    "buyPrice": 0.7919,      "currency": "CAD", "account": "TFSA wealthsimple" },
+    { "ticker": "XIT.TO",           "name": "iShares S&P/TSX Capped IT", "sector": "Technology ETF",   "shares": 23,      "buyPrice": 64.80,       "currency": "CAD", "account": "TFSA wealthsimple" },
+    { "ticker": "ZGLD.TO",          "name": "BMO Gold Bullion ETF",      "sector": "Cash",             "shares": 84.0895, "buyPrice": 56.70,       "currency": "CAD", "account": "TFSA wealthsimple" },
+    { "ticker": "TEC.TO",           "name": "TD Global Technology ETF",  "sector": "Tech",             "shares": 117.1954,"buyPrice": 49.66,       "currency": "CAD", "account": "TFSA wealthsimple" },
+    { "ticker": "DOL.TO",           "name": "Dollarama Inc",             "sector": "Retail",           "shares": 6.0723,  "buyPrice": 171.21,      "currency": "CAD", "account": "TFSA wealthsimple" },
+    { "ticker": "XEQT.TO",         "name": "iShares Core Equity ETF",   "sector": "Global Equity",    "shares": 396.3436,"buyPrice": 38.97,       "currency": "CAD", "account": "TFSA wealthsimple" },
+    { "ticker": "WELL.TO",          "name": "WELL Health Technologies",  "sector": "Healthcare Tech",  "shares": 398.4416,"buyPrice": 4.38,        "currency": "CAD", "account": "TFSA wealthsimple" },
+    { "ticker": "SPOT",             "name": "Spotify Technology",        "sector": "Tech",             "shares": 6,       "buyPrice": 503.69557,   "currency": "USD", "account": "TFSA" },
+    { "ticker": "AAPL",             "name": "Apple Inc",                 "sector": "Tech",             "shares": 7.059,   "buyPrice": 247.0564318, "currency": "USD", "account": "TFSA" },
+    { "ticker": "VIG",              "name": "Vanguard Dividend Apprec.", "sector": "ETF",              "shares": 16.1594, "buyPrice": 266.3271998, "currency": "USD", "account": "TFSA" },
+    { "ticker": "CSU.TO",           "name": "Constellation Software",    "sector": "Software",         "shares": 1.6194,  "buyPrice": 4243.86,     "currency": "CAD", "account": "FHSA" },
+    { "ticker": "SCHD",             "name": "Schwab US Dividend ETF",    "sector": "ETF",              "shares": 26.5349, "buyPrice": 37.44684664, "currency": "USD", "account": "FHSA" },
+    { "ticker": "XEQT.TO",         "name": "iShares Core Equity ETF",   "sector": "Global Equity",    "shares": 346.5574,"buyPrice": 35.60,       "currency": "CAD", "account": "FHSA" },
+    { "ticker": "TEC.TO",           "name": "TD Global Technology ETF",  "sector": "Tech",             "shares": 111.3054,"buyPrice": 49.33,       "currency": "CAD", "account": "FHSA" },
+    { "ticker": "VIG",              "name": "Vanguard Dividend Apprec.", "sector": "ETF",              "shares": 6.0202,  "buyPrice": 234.8987685, "currency": "USD", "account": "FHSA" },
+    { "ticker": "AAPL",             "name": "Apple Inc",                 "sector": "Tech",             "shares": 15.7313, "buyPrice": 252.7965248, "currency": "USD", "account": "FHSA" },
+    { "ticker": "SHOP.TO",          "name": "Shopify Inc",               "sector": "E-commerce Tech",  "shares": 8.3647,  "buyPrice": 143.02,      "currency": "CAD", "account": "FHSA" },
+    { "ticker": "SPOT",             "name": "Spotify Technology",        "sector": "Tech",             "shares": 5,       "buyPrice": 501.6498328, "currency": "USD", "account": "FHSA" },
+    { "ticker": "PNG.V",            "name": "Kraken Robotics",           "sector": "Tech",             "shares": 113.6375,"buyPrice": 8.80,        "currency": "CAD", "account": "FHSA" },
+    { "ticker": "XEQT.TO",         "name": "iShares Core Equity ETF",   "sector": "Global Equity",    "shares": 294,     "buyPrice": 38.00,       "currency": "CAD", "account": "RRSP" },
+    { "ticker": "TEC.TO",           "name": "TD Global Technology ETF",  "sector": "Tech",             "shares": 72,      "buyPrice": 44.59,       "currency": "CAD", "account": "RRSP" },
+    { "ticker": "QCOM",             "name": "Qualcomm Inc",              "sector": "Tech",             "shares": 54,      "buyPrice": 227.273958,  "currency": "USD", "account": "Regular" }
+  ],
+  "history": [
+    { "date": "2024-01-01", "value": 85000 },
+    { "date": "2024-03-01", "value": 88500 },
+    { "date": "2024-06-01", "value": 92000 },
+    { "date": "2024-09-01", "value": 96000 },
+    { "date": "2024-12-01", "value": 101185 },
+    { "date": "2025-03-01", "value": 109241 }
+  ],
+  "lastUpdated": "2026-03-09"
+}
