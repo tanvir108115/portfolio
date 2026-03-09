@@ -5,6 +5,11 @@
     "RRSP",
     "Regular"
   ],
+  "projection": {
+    "contribution": 1130.58,
+    "rate": 8,
+    "target": 1000000
+  },
   "holdings": [
     {
       "ticker": "NANO.V",
