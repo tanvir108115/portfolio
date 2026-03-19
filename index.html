@@ -741,22 +741,22 @@ function calcProjection() {
 //  KPIs
 // ═══════════════════════════════════════
 function getAccountInvested(account, rows) {
-  // Use accountTotals if set and non-zero, else fall back to shares × buyPrice
   const totals = portfolio.accountTotals || {};
+
   if (account === 'all') {
-    // Sum all accounts
-    const allAccounts = portfolio.accounts || [];
-    const totalFromFile = allAccounts.reduce((s, acc) => {
-      const t = totals[acc]?.invested || 0;
-      return s + t;
+    // Sum each account individually, using fallback per account
+    return (portfolio.accounts || []).reduce((sum, acc) => {
+      const fromFile = totals[acc]?.invested || 0;
+      if (fromFile > 0) {
+        const inCAD = fromFile;
+        return sum + (currentCurrency === 'USD' ? inCAD / usdcad : inCAD);
+      }
+      // Fallback: shares × buyPrice for this account
+      const accRows = computeRows(acc);
+      return sum + accRows.reduce((s, r) => s + toDisplay(r.invested, r.currency), 0);
     }, 0);
-    if (totalFromFile > 0) {
-      // Convert to display currency — accountTotals are always in CAD
-      return currentCurrency === 'USD' ? totalFromFile / usdcad : totalFromFile;
-    }
-    // Fallback
-    return rows.reduce((s, r) => s + toDisplay(r.invested, r.currency), 0);
   }
+
   const fromFile = totals[account]?.invested || 0;
   if (fromFile > 0) {
     return currentCurrency === 'USD' ? fromFile / usdcad : fromFile;
