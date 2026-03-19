@@ -183,6 +183,13 @@ svg.chart{width:100%;height:100%;overflow:visible}
     </div>
     <div class="form-group"><label class="form-label">Personal Access Token</label><input class="form-input" id="gh-token" type="password" placeholder="github_pat_..."></div>
     <div class="form-group"><label class="form-label">Apps Script URL (for live prices)</label><input class="form-input" id="gh-script" placeholder="https://script.google.com/macros/s/.../exec"></div>
+    <div style="margin:16px 0 8px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--border);padding-top:14px">Account Invested Totals (CAD) — actual cash in, 0 = auto from buy prices</div>
+    <div class="gh-row">
+      <div class="form-group"><label class="form-label">TFSA Invested</label><input class="form-input" id="at-tfsa" type="number" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">FHSA Invested</label><input class="form-input" id="at-fhsa" type="number" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">RRSP Invested</label><input class="form-input" id="at-rrsp" type="number" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Regular Invested</label><input class="form-input" id="at-regular" type="number" placeholder="0"></div>
+    </div>
     <div style="display:flex;gap:8px"><button class="btn primary" onclick="saveGHConfig()">Save</button><button class="btn" onclick="toggleGHSetup()">Cancel</button></div>
   </div>
 
@@ -733,9 +740,34 @@ function calcProjection() {
 // ═══════════════════════════════════════
 //  KPIs
 // ═══════════════════════════════════════
+function getAccountInvested(account, rows) {
+  // Use accountTotals if set and non-zero, else fall back to shares × buyPrice
+  const totals = portfolio.accountTotals || {};
+  if (account === 'all') {
+    // Sum all accounts
+    const allAccounts = portfolio.accounts || [];
+    const totalFromFile = allAccounts.reduce((s, acc) => {
+      const t = totals[acc]?.invested || 0;
+      return s + t;
+    }, 0);
+    if (totalFromFile > 0) {
+      // Convert to display currency — accountTotals are always in CAD
+      return currentCurrency === 'USD' ? totalFromFile / usdcad : totalFromFile;
+    }
+    // Fallback
+    return rows.reduce((s, r) => s + toDisplay(r.invested, r.currency), 0);
+  }
+  const fromFile = totals[account]?.invested || 0;
+  if (fromFile > 0) {
+    return currentCurrency === 'USD' ? fromFile / usdcad : fromFile;
+  }
+  // Fallback: shares × buyPrice
+  return rows.reduce((s, r) => s + toDisplay(r.invested, r.currency), 0);
+}
+
 function renderKPIs(rows) {
   const sym = currentCurrency === 'CAD' ? 'CA$' : 'US$';
-  const inv = rows.reduce((s, r) => s + toDisplay(r.invested, r.currency), 0);
+  const inv = getAccountInvested(currentFilter, rows);
   const val = rows.reduce((s, r) => s + toDisplay(r.value, r.currency), 0);
   const gain = val - inv;
   const gainPct = inv > 0 ? gain / inv * 100 : 0;
@@ -855,17 +887,17 @@ function renderDonut(rows) {
 //  ACCOUNTS
 // ═══════════════════════════════════════
 function renderAccounts() {
-  const list=document.getElementById('account-list'); list.innerHTML='';
-  const sym=currentCurrency==='CAD'?'CA$':'US$';
-  (portfolio.accounts||[]).forEach(acc=>{
-    const rows=computeRows(acc);
-    const inv=rows.reduce((s,r)=>s+toDisplay(r.invested,r.currency),0);
-    const val=rows.reduce((s,r)=>s+toDisplay(r.value,r.currency),0);
-    const gain=inv>0?(val-inv)/inv*100:0;
-    const div=document.createElement('div');
-    div.className='account-row'+(currentFilter===acc?' active-account':'');
-    div.onclick=()=>setFilter(acc,null);
-    div.innerHTML=`<div class="account-name">${acc}</div><div class="account-vals"><div class="account-val">${sym}${fmt(val)}</div><div class="account-gain ${gain>=0?'pos':'neg'}">${gain>=0?'+':''}${gain.toFixed(2)}%</div></div>`;
+  const list = document.getElementById('account-list'); list.innerHTML = '';
+  const sym = currentCurrency === 'CAD' ? 'CA$' : 'US$';
+  (portfolio.accounts || []).forEach(acc => {
+    const rows = computeRows(acc);
+    const inv  = getAccountInvested(acc, rows);
+    const val  = rows.reduce((s, r) => s + toDisplay(r.value, r.currency), 0);
+    const gain = inv > 0 ? (val - inv) / inv * 100 : 0;
+    const div  = document.createElement('div');
+    div.className = 'account-row' + (currentFilter === acc ? ' active-account' : '');
+    div.onclick = () => setFilter(acc, null);
+    div.innerHTML = `<div class="account-name">${acc}</div><div class="account-vals"><div class="account-val">${sym}${fmt(val)}</div><div class="account-gain ${gain>=0?'pos':'neg'}">${gain>=0?'+':''}${gain.toFixed(2)}%</div></div>`;
     list.appendChild(div);
   });
 }
@@ -1042,29 +1074,51 @@ function deleteHolding() {
 //  GITHUB
 // ═══════════════════════════════════════
 function loadGHConfig() {
-  const cfg=getGHConfig();
-  if(cfg){
-    document.getElementById('gh-user').value=cfg.user||'';
-    document.getElementById('gh-repo').value=cfg.repo||'';
-    document.getElementById('gh-token').value=cfg.token||'';
-    document.getElementById('gh-script').value=cfg.script||'';
+  const cfg = getGHConfig();
+  if (cfg) {
+    document.getElementById('gh-user').value   = cfg.user   || '';
+    document.getElementById('gh-repo').value   = cfg.repo   || '';
+    document.getElementById('gh-token').value  = cfg.token  || '';
+    document.getElementById('gh-script').value = cfg.script || '';
   }
+  // Populate accountTotals from portfolio if loaded
+  const at = portfolio?.accountTotals || {};
+  document.getElementById('at-tfsa').value    = at.TFSA?.invested    || '';
+  document.getElementById('at-fhsa').value    = at.FHSA?.invested    || '';
+  document.getElementById('at-rrsp').value    = at.RRSP?.invested    || '';
+  document.getElementById('at-regular').value = at.Regular?.invested || '';
 }
 function getGHConfig(){try{return JSON.parse(localStorage.getItem('gh_config'));}catch{return null;}}
 function getScriptUrl(){return getGHConfig()?.script||'';}
 
-function toggleGHSetup(){document.getElementById('gh-setup').classList.toggle('hidden');}
+function toggleGHSetup() {
+  const panel = document.getElementById('gh-setup');
+  panel.classList.toggle('hidden');
+  if (!panel.classList.contains('hidden')) loadGHConfig();
+}
 
-function saveGHConfig(){
-  const cfg={
-    user: document.getElementById('gh-user').value.trim(),
-    repo: document.getElementById('gh-repo').value.trim(),
-    token: document.getElementById('gh-token').value.trim(),
+function saveGHConfig() {
+  const cfg = {
+    user:   document.getElementById('gh-user').value.trim(),
+    repo:   document.getElementById('gh-repo').value.trim(),
+    token:  document.getElementById('gh-token').value.trim(),
     script: document.getElementById('gh-script').value.trim(),
   };
-  localStorage.setItem('gh_config',JSON.stringify(cfg));
+  localStorage.setItem('gh_config', JSON.stringify(cfg));
+
+  // Save accountTotals into portfolio and push to GitHub
+  const parse = (id) => { const v = parseFloat(document.getElementById(id).value); return isNaN(v) ? 0 : v; };
+  portfolio.accountTotals = {
+    TFSA:    { invested: parse('at-tfsa')    },
+    FHSA:    { invested: parse('at-fhsa')    },
+    RRSP:    { invested: parse('at-rrsp')    },
+    Regular: { invested: parse('at-regular') },
+  };
+  portfolio.lastUpdated = new Date().toISOString().slice(0, 10);
+
   document.getElementById('gh-setup').classList.add('hidden');
-  showToast('Settings saved','success');
+  showToast('Settings saved', 'success');
+  saveToGitHub();
   refreshPrices();
 }
 

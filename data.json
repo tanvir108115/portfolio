@@ -5,6 +5,12 @@
     "RRSP",
     "Regular"
   ],
+  "accountTotals": {
+    "TFSA":    { "invested": 42500 },
+    "FHSA":    { "invested": 32000 },
+    "RRSP":    { "invested": 14412 },
+    "Regular": { "invested": 12273 }
+  },
   "holdings": [
     {
       "ticker": "NANO.V",
@@ -16,7 +22,7 @@
       "account": "TFSA"
     },
     {
-      "ticker": "XIT",
+      "ticker": "XIT.TO",
       "name": "iShares S&P/TSX Capped Information Tech Idx ETF",
       "sector": "Technology ETF",
       "account": "TFSA",
@@ -25,7 +31,7 @@
       "currency": "CAD"
     },
     {
-      "ticker": "ZGLD",
+      "ticker": "ZGLD.TO",
       "name": "BMO Gold Bullion Series Units ETF",
       "sector": "Cash",
       "account": "TFSA",
@@ -169,7 +175,7 @@
       "currency": "USD"
     },
     {
-      "ticker": "PNG",
+      "ticker": "PNG.V",
       "name": "Kraken Robotics Inc",
       "sector": "Tech",
       "account": "FHSA",
@@ -206,32 +212,14 @@
     }
   ],
   "history": [
-    {
-      "date": "2024-01-01",
-      "value": 85000
-    },
-    {
-      "date": "2024-03-01",
-      "value": 88500
-    },
-    {
-      "date": "2024-06-01",
-      "value": 92000
-    },
-    {
-      "date": "2024-09-01",
-      "value": 96000
-    },
-    {
-      "date": "2024-12-01",
-      "value": 101185
-    },
-    {
-      "date": "2025-03-01",
-      "value": 109241
-    }
+    { "date": "2024-01-01", "value": 85000 },
+    { "date": "2024-03-01", "value": 88500 },
+    { "date": "2024-06-01", "value": 92000 },
+    { "date": "2024-09-01", "value": 96000 },
+    { "date": "2024-12-01", "value": 101185 },
+    { "date": "2025-03-01", "value": 109241 }
   ],
-  "lastUpdated": "2026-03-11",
+  "lastUpdated": "2026-03-19",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
