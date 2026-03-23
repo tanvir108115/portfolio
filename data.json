@@ -60,10 +60,10 @@
       "ticker": "XEQT.TO",
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
-      "shares": 396.3436,
-      "buyPrice": 38.97,
-      "currency": "CAD",
-      "account": "TFSA"
+      "account": "TFSA",
+      "shares": 430.8308,
+      "buyPrice": 39,
+      "currency": "CAD"
     },
     {
       "ticker": "WELL.TO",
