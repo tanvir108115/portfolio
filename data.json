@@ -132,10 +132,10 @@
       "ticker": "XEQT.TO",
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
-      "shares": 346.5574,
+      "account": "FHSA",
+      "shares": 311.5574,
       "buyPrice": 35.6,
-      "currency": "CAD",
-      "account": "FHSA"
+      "currency": "CAD"
     },
     {
       "ticker": "TEC.TO",
