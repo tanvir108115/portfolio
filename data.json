@@ -30,15 +30,6 @@
       "account": "TFSA"
     },
     {
-      "ticker": "XIT.TO",
-      "name": "iShares S&P/TSX Capped Information Tech Idx ETF",
-      "sector": "Technology ETF",
-      "account": "TFSA",
-      "shares": 23,
-      "buyPrice": 64.8,
-      "currency": "CAD"
-    },
-    {
       "ticker": "ZGLD.TO",
       "name": "BMO Gold Bullion Series Units ETF",
       "sector": "Cash",
