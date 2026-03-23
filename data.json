@@ -69,10 +69,10 @@
       "ticker": "WELL.TO",
       "name": "WELL Health Technologies",
       "sector": "Healthcare Tech",
-      "shares": 398.4416,
-      "buyPrice": 4.38,
-      "currency": "CAD",
-      "account": "TFSA"
+      "account": "TFSA",
+      "shares": 425.4416,
+      "buyPrice": 4.42,
+      "currency": "CAD"
     },
     {
       "ticker": "SPOT",
