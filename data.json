@@ -114,10 +114,10 @@
       "ticker": "CSU.TO",
       "name": "Constellation Software",
       "sector": "Software",
-      "shares": 1.6194,
-      "buyPrice": 4243.86,
-      "currency": "CAD",
-      "account": "FHSA"
+      "account": "FHSA",
+      "shares": 2.1607,
+      "buyPrice": 3818.04,
+      "currency": "CAD"
     },
     {
       "ticker": "SCHD",
@@ -245,7 +245,7 @@
       "value": 109241
     }
   ],
-  "lastUpdated": "2026-03-19",
+  "lastUpdated": "2026-03-23",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
