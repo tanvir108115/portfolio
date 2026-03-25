@@ -186,10 +186,10 @@
       "ticker": "XEQT.TO",
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
-      "shares": 294,
-      "buyPrice": 38,
-      "currency": "CAD",
-      "account": "RRSP"
+      "account": "RRSP",
+      "shares": 317,
+      "buyPrice": 38.14,
+      "currency": "CAD"
     },
     {
       "ticker": "TEC.TO",
@@ -236,7 +236,7 @@
       "value": 109241
     }
   ],
-  "lastUpdated": "2026-03-23",
+  "lastUpdated": "2026-03-25",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
