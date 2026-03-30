@@ -42,10 +42,10 @@
       "ticker": "TEC.TO",
       "name": "TD Global Technology ETF",
       "sector": "Tech",
-      "shares": 117.1954,
-      "buyPrice": 49.66,
-      "currency": "CAD",
-      "account": "TFSA"
+      "account": "TFSA",
+      "shares": 139.0391,
+      "buyPrice": 49.16,
+      "currency": "CAD"
     },
     {
       "ticker": "DOL.TO",
