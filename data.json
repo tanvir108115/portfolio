@@ -51,10 +51,10 @@
       "ticker": "DOL.TO",
       "name": "Dollarama Inc",
       "sector": "Retail",
-      "shares": 6.0723,
-      "buyPrice": 171.21,
-      "currency": "CAD",
-      "account": "TFSA"
+      "account": "TFSA",
+      "shares": 6.0755,
+      "buyPrice": 171.22,
+      "currency": "CAD"
     },
     {
       "ticker": "XEQT.TO",
@@ -236,7 +236,7 @@
       "value": 109241
     }
   ],
-  "lastUpdated": "2026-03-30",
+  "lastUpdated": "2026-04-07",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
