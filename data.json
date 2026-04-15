@@ -174,13 +174,13 @@
       "currency": "USD"
     },
     {
-      "ticker": "PNG.V",
+      "ticker": "PNG",
       "name": "Kraken Robotics Inc",
       "sector": "Tech",
       "account": "FHSA",
       "shares": 113.6375,
-      "buyPrice": 8.8,
-      "currency": "CAD"
+      "buyPrice": 8.49,
+      "currency": "USD"
     },
     {
       "ticker": "XEQT.TO",
