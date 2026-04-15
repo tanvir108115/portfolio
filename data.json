@@ -106,8 +106,8 @@
       "name": "Constellation Software",
       "sector": "Software",
       "account": "FHSA",
-      "shares": 2.1607,
-      "buyPrice": 3818.04,
+      "shares": 2.1618,
+      "buyPrice": 3817.47,
       "currency": "CAD"
     },
     {
@@ -236,7 +236,7 @@
       "value": 109241
     }
   ],
-  "lastUpdated": "2026-04-13",
+  "lastUpdated": "2026-04-15",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
