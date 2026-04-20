@@ -208,6 +208,15 @@
       "shares": 54.224,
       "buyPrice": 169.32,
       "currency": "USD"
+    },
+    {
+      "ticker": "NVDA",
+      "name": "NVIDIA Corp",
+      "sector": "Tech",
+      "account": "Regular",
+      "shares": 0.0466,
+      "buyPrice": 199.29,
+      "currency": "USD"
     }
   ],
   "history": [
@@ -236,7 +245,7 @@
       "value": 109241
     }
   ],
-  "lastUpdated": "2026-04-15",
+  "lastUpdated": "2026-04-20",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
