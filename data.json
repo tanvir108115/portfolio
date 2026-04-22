@@ -7,7 +7,7 @@
   ],
   "accountTotals": {
     "TFSA": {
-      "invested": 50500
+      "invested": 51500
     },
     "FHSA": {
       "invested": 32000
@@ -245,7 +245,7 @@
       "value": 109241
     }
   ],
-  "lastUpdated": "2026-04-20",
+  "lastUpdated": "2026-04-22",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
