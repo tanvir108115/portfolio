@@ -3,7 +3,8 @@
     "TFSA",
     "FHSA",
     "RRSP",
-    "Regular"
+    "Regular",
+    "Mim"
   ],
   "accountTotals": {
     "TFSA": {
