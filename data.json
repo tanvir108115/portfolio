@@ -221,6 +221,15 @@
       "shares": 0.0466,
       "buyPrice": 199.29,
       "currency": "USD"
+    },
+    {
+      "ticker": "ZGLD",
+      "name": "BMO Gold Bullion Series Units ETF",
+      "sector": "Cash",
+      "account": "Mim",
+      "shares": 1,
+      "buyPrice": 69.32,
+      "currency": "USD"
     }
   ],
   "history": [
