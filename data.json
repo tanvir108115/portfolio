@@ -184,7 +184,7 @@
       "account": "FHSA",
       "shares": 113.6375,
       "buyPrice": 8.8,
-      "currency": "USD"
+      "currency": "CAD"
     },
     {
       "ticker": "XEQT.TO",
@@ -266,7 +266,7 @@
       "value": 126877
     }
   ],
-  "lastUpdated": "2026-05-01",
+  "lastUpdated": "2026-05-05",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
