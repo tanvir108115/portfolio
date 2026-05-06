@@ -191,7 +191,7 @@
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
       "account": "RRSP",
-      "shares": 329,
+      "shares": 340,
       "buyPrice": 38.27,
       "currency": "CAD"
     },
@@ -266,7 +266,7 @@
       "value": 126877
     }
   ],
-  "lastUpdated": "2026-05-05",
+  "lastUpdated": "2026-05-06",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
