@@ -230,6 +230,15 @@
       "shares": 14.5708,
       "buyPrice": 68.64,
       "currency": "CAD"
+    },
+    {
+      "ticker": "QCOM",
+      "name": "Qualcomm Inc",
+      "sector": "Tech",
+      "account": "Mim",
+      "shares": 90,
+      "buyPrice": 219.09,
+      "currency": "USD"
     }
   ],
   "history": [
@@ -266,7 +275,7 @@
       "value": 126877
     }
   ],
-  "lastUpdated": "2026-05-06",
+  "lastUpdated": "2026-05-09",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
