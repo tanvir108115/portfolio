@@ -192,7 +192,7 @@
       "sector": "Global Equity",
       "account": "RRSP",
       "shares": 350,
-      "buyPrice": 38.61,
+      "buyPrice": 38.75,
       "currency": "CAD"
     },
     {
@@ -275,7 +275,7 @@
       "value": 126877
     }
   ],
-  "lastUpdated": "2026-05-11",
+  "lastUpdated": "2026-05-19",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
