@@ -230,6 +230,15 @@
       "shares": 0,
       "buyPrice": 219.09,
       "currency": "USD"
+    },
+    {
+      "ticker": "VIG",
+      "name": "Vanguard Dividend Appreciation Index Fund ETF",
+      "sector": "ETF",
+      "account": "Regular",
+      "shares": 13.0397,
+      "buyPrice": 230.296,
+      "currency": "USD"
     }
   ],
   "history": [
