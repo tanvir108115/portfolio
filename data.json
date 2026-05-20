@@ -52,15 +52,6 @@
       "currency": "CAD"
     },
     {
-      "ticker": "DOL.TO",
-      "name": "Dollarama Inc",
-      "sector": "Retail",
-      "account": "TFSA",
-      "shares": 6.0755,
-      "buyPrice": 171.22,
-      "currency": "CAD"
-    },
-    {
       "ticker": "XEQT.TO",
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
@@ -275,7 +266,7 @@
       "value": 126877
     }
   ],
-  "lastUpdated": "2026-05-19",
+  "lastUpdated": "2026-05-20",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
