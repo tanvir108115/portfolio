@@ -153,11 +153,11 @@
     {
       "ticker": "SHOP.TO",
       "name": "Shopify Inc",
-      "sector": "E-commerce Tech",
+      "sector": "Tech",
+      "account": "FHSA",
       "shares": 8.3647,
       "buyPrice": 143.02,
-      "currency": "CAD",
-      "account": "FHSA"
+      "currency": "CAD"
     },
     {
       "ticker": "SPOT",
