@@ -255,9 +255,13 @@
     {
       "date": "2026-05-01",
       "value": 126877
+    },
+    {
+      "date": "2026-06-01",
+      "value": 144921
     }
   ],
-  "lastUpdated": "2026-05-26",
+  "lastUpdated": "2026-06-01",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
