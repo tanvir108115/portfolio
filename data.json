@@ -212,6 +212,15 @@
       "shares": 13.0852,
       "buyPrice": 230.2961,
       "currency": "USD"
+    },
+    {
+      "ticker": "XRE",
+      "name": "iShares S&P/TSX Capped REIT Index ETF",
+      "sector": "ETF",
+      "account": "RRSP",
+      "shares": 16.69,
+      "buyPrice": 16.68,
+      "currency": "USD"
     }
   ],
   "history": [
