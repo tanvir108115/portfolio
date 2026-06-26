@@ -221,6 +221,15 @@
       "shares": 1,
       "buyPrice": 16.69,
       "currency": "CAD"
+    },
+    {
+      "ticker": "MANULIFE",
+      "name": "",
+      "sector": "ETF",
+      "account": "TFSA",
+      "shares": 1,
+      "buyPrice": 2852.6,
+      "currency": "CAD"
     }
   ],
   "history": [
