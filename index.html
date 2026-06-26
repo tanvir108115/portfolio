@@ -82,6 +82,7 @@ td:first-child{text-align:left}
 .alloc-fill{height:100%}
 .live-dot{font-size:8px;color:var(--green);margin-right:2px}
 .stale-dot{font-size:8px;color:var(--muted);margin-right:2px}
+.manual-dot{font-size:8px;color:var(--gold);margin-right:2px}
 .change-up{color:var(--green);font-size:10px}
 .change-dn{color:var(--red);font-size:10px}
 
@@ -375,6 +376,7 @@ svg.chart{width:100%;height:100%;overflow:visible}
         <div class="form-group"><label class="form-label">Currency</label>
           <select class="form-input form-select" id="f-currency"><option value="CAD">CAD</option><option value="USD">USD</option></select>
         </div>
+        <div class="form-group"><label class="form-label">Mkt Price Override</label><input class="form-input" id="f-mktprice" type="number" step="any" placeholder="0 = auto fetch" value="0"></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -474,7 +476,8 @@ async function refreshPrices() {
   }
 
   try {
-    const tickers = [...new Set(portfolio.holdings.map(h => h.ticker))];
+    const overriddenTickers = new Set(portfolio.holdings.filter(h => h.mktPriceOverride > 0).map(h => h.ticker));
+    const tickers = [...new Set(portfolio.holdings.map(h => h.ticker))].filter(t => !overriddenTickers.has(t));
     const url = `${scriptUrl}?action=prices&tickers=${encodeURIComponent(tickers.join(','))}`;
     const res = await fetch(url);
     const data = await res.json();
@@ -631,16 +634,19 @@ function computeRows(filterAccount) {
       e.buyPrice = (e.shares * e.buyPrice + h.shares * h.buyPrice) / totalShares;
       e.shares = totalShares;
       if (!e._accounts.includes(account)) e._accounts.push(account);
+      // Carry forward a non-zero override if either lot has one
+      if (!e.mktPriceOverride && h.mktPriceOverride) e.mktPriceOverride = h.mktPriceOverride;
     }
   });
 
   const rows = Object.values(map).map(h => {
-    const livePrice = prices[h.ticker]?.price || null;
-    const currentPrice = livePrice || h.buyPrice;  // for value calc only
-    const invested  = h.shares * h.buyPrice;        // always use buy price
-    const value     = h.shares * currentPrice;      // use live if available
-    const gain      = invested > 0 ? ((value - invested) / invested * 100) : 0;
-    const change    = prices[h.ticker]?.changePct || null;
+    const override   = h.mktPriceOverride || 0;
+    const livePrice   = override > 0 ? override : (prices[h.ticker]?.price || null);
+    const currentPrice = livePrice || h.buyPrice;   // for value calc only
+    const invested    = h.shares * h.buyPrice;       // always use buy price
+    const value        = h.shares * currentPrice;    // use override/live if available
+    const gain         = invested > 0 ? ((value - invested) / invested * 100) : 0;
+    const change       = override > 0 ? null : (prices[h.ticker]?.changePct || null);
     return { ...h, livePrice, price: currentPrice, invested, value, gain, change };
   });
 
@@ -832,7 +838,7 @@ function renderTable(rows) {
     const dispInv   = toDisplay(r.invested, r.currency);
     const dispVal   = toDisplay(r.value, r.currency);
     const barW = Math.min(50, Math.round(r.alloc / 40 * 50));
-    const liveDot = r.livePrice ? '<span class="live-dot">●</span>' : '<span class="stale-dot">○</span>';
+    const liveDot = r.mktPriceOverride > 0 ? '<span class="manual-dot">◆</span>' : (r.livePrice ? '<span class="live-dot">●</span>' : '<span class="stale-dot">○</span>');
     const changeStr = r.change != null ? `<span class="${r.change>=0?'change-up':'change-dn'}">${r.change>=0?'+':''}${r.change.toFixed(2)}%</span>` : '';
     const acctBadge = currentFilter === 'all'
       ? (r._accounts||[]).map(a => `<span class="badge">${a.replace('TFSA wealthsimple','TFSA')}</span>`).join('')
@@ -1053,6 +1059,7 @@ function openEditModal(idx) {
   document.getElementById('f-shares').value=h.shares;
   document.getElementById('f-buyprice').value=h.buyPrice;
   document.getElementById('f-currency').value=h.currency;
+  document.getElementById('f-mktprice').value=h.mktPriceOverride||0;
   document.getElementById('modal-overlay').classList.remove('hidden');
 }
 
@@ -1061,6 +1068,7 @@ function closeModal() { document.getElementById('modal-overlay').classList.add('
 function clearForm() {
   ['f-ticker','f-name','f-sector','f-shares','f-buyprice'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-currency').value='CAD';
+  document.getElementById('f-mktprice').value='0';
 }
 
 function populateAccountSelect(selected) {
@@ -1074,6 +1082,7 @@ function populateAccountSelect(selected) {
 
 function saveHolding() {
   const idx=document.getElementById('edit-index').value;
+  const mktOverride = parseFloat(document.getElementById('f-mktprice').value) || 0;
   const h={
     ticker:   document.getElementById('f-ticker').value.trim().toUpperCase(),
     name:     document.getElementById('f-name').value.trim(),
@@ -1082,6 +1091,7 @@ function saveHolding() {
     shares:   parseFloat(document.getElementById('f-shares').value),
     buyPrice: parseFloat(document.getElementById('f-buyprice').value),
     currency: document.getElementById('f-currency').value,
+    mktPriceOverride: mktOverride,
   };
   if(!h.ticker||isNaN(h.shares)||isNaN(h.buyPrice)){showToast('Ticker, shares and buy price are required','error');return;}
   if(idx!=='') portfolio.holdings[parseInt(idx)]=h;
