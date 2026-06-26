@@ -229,7 +229,8 @@
       "account": "RRSP",
       "shares": 1,
       "buyPrice": 2852.6,
-      "currency": "CAD"
+      "currency": "CAD",
+      "mktPriceOverride": 2852.6
     }
   ],
   "history": [
