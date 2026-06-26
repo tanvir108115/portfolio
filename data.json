@@ -200,9 +200,10 @@
       "name": "BMO Gold Bullion Series Units ETF",
       "sector": "Cash",
       "account": "Mim",
-      "shares": 59.3445,
-      "buyPrice": 66.39,
-      "currency": "CAD"
+      "shares": 66.9468,
+      "buyPrice": 65.91,
+      "currency": "CAD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "VIG",
