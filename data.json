@@ -104,9 +104,10 @@
       "name": "Schwab US Dividend ETF",
       "sector": "ETF",
       "account": "FHSA",
-      "shares": 26.725,
-      "buyPrice": 27.6028,
-      "currency": "USD"
+      "shares": 26.9058,
+      "buyPrice": 27.6309,
+      "currency": "USD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "XEQT.TO",
