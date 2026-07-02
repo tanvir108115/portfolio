@@ -220,9 +220,10 @@
       "name": "iShares S&P/TSX Capped REIT Index ETF",
       "sector": "ETF",
       "account": "RRSP",
-      "shares": 1,
+      "shares": 0,
       "buyPrice": 16.69,
-      "currency": "CAD"
+      "currency": "CAD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "MANULIFE",
