@@ -75,9 +75,10 @@
       "name": "Apple Inc",
       "sector": "Tech",
       "account": "TFSA",
-      "shares": 7.059,
-      "buyPrice": 181.9709,
-      "currency": "USD"
+      "shares": 7.0643,
+      "buyPrice": 182.0604,
+      "currency": "USD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "VIG",
