@@ -133,9 +133,10 @@
       "name": "Vanguard Dividend Apprec.",
       "sector": "ETF",
       "account": "FHSA",
-      "shares": 6.0398,
-      "buyPrice": 173.1566,
-      "currency": "USD"
+      "shares": 6.0614,
+      "buyPrice": 173.3861,
+      "currency": "USD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "AAPL",
