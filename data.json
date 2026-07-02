@@ -214,9 +214,10 @@
       "name": "Vanguard Dividend Appreciation Index Fund ETF",
       "sector": "ETF",
       "account": "Regular",
-      "shares": 13.0852,
-      "buyPrice": 230.2961,
-      "currency": "USD"
+      "shares": 13.1322,
+      "buyPrice": 230.3224,
+      "currency": "USD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "XRE",
