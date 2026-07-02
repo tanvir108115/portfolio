@@ -173,9 +173,10 @@
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
       "account": "RRSP",
-      "shares": 366,
+      "shares": 369,
       "buyPrice": 38.98,
-      "currency": "CAD"
+      "currency": "CAD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "TEC.TO",
@@ -276,7 +277,7 @@
       "value": 145654
     }
   ],
-  "lastUpdated": "2026-07-01",
+  "lastUpdated": "2026-07-02",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
