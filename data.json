@@ -111,9 +111,10 @@
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
       "account": "FHSA",
-      "shares": 312.2595,
-      "buyPrice": 35.61,
-      "currency": "CAD"
+      "shares": 284.2821,
+      "buyPrice": 35.68,
+      "currency": "CAD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "TEC.TO",
