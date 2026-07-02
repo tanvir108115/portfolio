@@ -56,9 +56,10 @@
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
       "account": "TFSA",
-      "shares": 601.8248,
-      "buyPrice": 39.61,
-      "currency": "CAD"
+      "shares": 606.1368,
+      "buyPrice": 39.65,
+      "currency": "CAD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "SPOT",
