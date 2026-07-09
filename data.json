@@ -240,9 +240,9 @@
       "sector": "ETF",
       "account": "RRSP",
       "shares": 1,
-      "buyPrice": 2852.6,
+      "buyPrice": 5721.24,
       "currency": "CAD",
-      "mktPriceOverride": 2852.6
+      "mktPriceOverride": 5756.94
     }
   ],
   "history": [
