@@ -209,8 +209,8 @@
       "name": "BMO Gold Bullion Series Units ETF",
       "sector": "Cash",
       "account": "Mim",
-      "shares": 75.4615,
-      "buyPrice": 65.63,
+      "shares": 83.1153,
+      "buyPrice": 65.23,
       "currency": "CAD",
       "mktPriceOverride": 0
     },
@@ -287,7 +287,7 @@
       "value": 145654
     }
   ],
-  "lastUpdated": "2026-07-23",
+  "lastUpdated": "2026-07-24",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
