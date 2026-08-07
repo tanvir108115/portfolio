@@ -240,9 +240,9 @@
       "sector": "ETF",
       "account": "RRSP",
       "shares": 1,
-      "buyPrice": 7246.9,
+      "buyPrice": 10107.55,
       "currency": "CAD",
-      "mktPriceOverride": 7258.84
+      "mktPriceOverride": 10289.03
     }
   ],
   "history": [
@@ -291,7 +291,7 @@
       "value": 133057
     }
   ],
-  "lastUpdated": "2026-08-06",
+  "lastUpdated": "2026-08-07",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
