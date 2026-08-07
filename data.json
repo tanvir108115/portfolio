@@ -200,9 +200,10 @@
       "name": "Qualcomm Inc",
       "sector": "Tech",
       "account": "Regular",
-      "shares": 46.407,
+      "shares": 74.407,
       "buyPrice": 173.78,
-      "currency": "USD"
+      "currency": "USD",
+      "mktPriceOverride": 0
     },
     {
       "ticker": "ZGLD.TO",
