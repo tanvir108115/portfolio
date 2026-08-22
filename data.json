@@ -200,8 +200,8 @@
       "name": "Qualcomm Inc",
       "sector": "Tech",
       "account": "Regular",
-      "shares": 46.407,
-      "buyPrice": 173.78,
+      "shares": 73.407,
+      "buyPrice": 168.99,
       "currency": "USD",
       "mktPriceOverride": 0
     },
@@ -292,7 +292,7 @@
       "value": 133057
     }
   ],
-  "lastUpdated": "2026-08-21",
+  "lastUpdated": "2026-08-22",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
