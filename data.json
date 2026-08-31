@@ -243,7 +243,7 @@
       "shares": 1,
       "buyPrice": 12443.71,
       "currency": "CAD",
-      "mktPriceOverride": 12338.89
+      "mktPriceOverride": 12544.89
     }
   ],
   "history": [
@@ -292,7 +292,7 @@
       "value": 133057
     }
   ],
-  "lastUpdated": "2026-08-22",
+  "lastUpdated": "2026-08-31",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
