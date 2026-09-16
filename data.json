@@ -140,15 +140,6 @@
       "mktPriceOverride": 0
     },
     {
-      "ticker": "SHOP.TO",
-      "name": "Shopify Inc",
-      "sector": "Tech",
-      "account": "FHSA",
-      "shares": 8.3647,
-      "buyPrice": 143.02,
-      "currency": "CAD"
-    },
-    {
       "ticker": "SPOT",
       "name": "Spotify Technology",
       "sector": "Tech",
@@ -287,7 +278,7 @@
       "value": 166049
     }
   ],
-  "lastUpdated": "2026-09-02",
+  "lastUpdated": "2026-09-16",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
