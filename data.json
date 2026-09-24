@@ -53,15 +53,6 @@
       "mktPriceOverride": 0
     },
     {
-      "ticker": "SPOT",
-      "name": "Spotify Technology",
-      "sector": "Tech",
-      "account": "TFSA",
-      "shares": 6,
-      "buyPrice": 371,
-      "currency": "USD"
-    },
-    {
       "ticker": "VIG",
       "name": "Vanguard Dividend Apprec.",
       "sector": "ETF",
