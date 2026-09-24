@@ -62,16 +62,6 @@
       "currency": "USD"
     },
     {
-      "ticker": "AAPL",
-      "name": "Apple Inc",
-      "sector": "Tech",
-      "account": "TFSA",
-      "shares": 7.0643,
-      "buyPrice": 182.0604,
-      "currency": "USD",
-      "mktPriceOverride": 0
-    },
-    {
       "ticker": "VIG",
       "name": "Vanguard Dividend Apprec.",
       "sector": "ETF",
@@ -278,7 +268,7 @@
       "value": 166049
     }
   ],
-  "lastUpdated": "2026-09-16",
+  "lastUpdated": "2026-09-24",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
