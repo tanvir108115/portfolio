@@ -53,16 +53,6 @@
       "mktPriceOverride": 0
     },
     {
-      "ticker": "VIG",
-      "name": "Vanguard Dividend Apprec.",
-      "sector": "ETF",
-      "account": "TFSA",
-      "shares": 16.2706,
-      "buyPrice": 196.3788,
-      "currency": "USD",
-      "mktPriceOverride": 0
-    },
-    {
       "ticker": "CSU.TO",
       "name": "Constellation Software",
       "sector": "Tech",
