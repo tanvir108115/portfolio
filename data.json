@@ -81,16 +81,6 @@
       "account": "FHSA"
     },
     {
-      "ticker": "VIG",
-      "name": "Vanguard Dividend Apprec.",
-      "sector": "ETF",
-      "account": "FHSA",
-      "shares": 6.0614,
-      "buyPrice": 173.3861,
-      "currency": "USD",
-      "mktPriceOverride": 0
-    },
-    {
       "ticker": "PNG",
       "name": "Kraken Robotics Inc",
       "sector": "Tech",
