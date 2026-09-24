@@ -62,16 +62,6 @@
       "currency": "CAD"
     },
     {
-      "ticker": "SCHD",
-      "name": "Schwab US Dividend ETF",
-      "sector": "ETF",
-      "account": "FHSA",
-      "shares": 26.9058,
-      "buyPrice": 27.6309,
-      "currency": "USD",
-      "mktPriceOverride": 0
-    },
-    {
       "ticker": "XEQT.TO",
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
