@@ -101,15 +101,6 @@
       "mktPriceOverride": 0
     },
     {
-      "ticker": "SPOT",
-      "name": "Spotify Technology",
-      "sector": "Tech",
-      "account": "FHSA",
-      "shares": 5,
-      "buyPrice": 369.4932,
-      "currency": "USD"
-    },
-    {
       "ticker": "PNG",
       "name": "Kraken Robotics Inc",
       "sector": "Tech",
