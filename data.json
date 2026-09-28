@@ -183,7 +183,7 @@
       "ticker": "SPUS",
       "name": "SP Funds S&P 500 Sharia Industry Exclusions ETF",
       "sector": "",
-      "account": "TFSA",
+      "account": "Regular",
       "shares": 0.5999,
       "buyPrice": 60.0097,
       "currency": "USD",
