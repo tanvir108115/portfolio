@@ -178,6 +178,16 @@
       "buyPrice": 59.4848,
       "currency": "USD",
       "mktPriceOverride": 0
+    },
+    {
+      "ticker": "SPUS",
+      "name": "SP Funds S&P 500 Sharia Industry Exclusions ETF",
+      "sector": "",
+      "account": "TFSA",
+      "shares": 0.5999,
+      "buyPrice": 60.0097,
+      "currency": "USD",
+      "mktPriceOverride": 0
     }
   ],
   "history": [
