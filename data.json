@@ -47,8 +47,8 @@
       "name": "iShares Core Equity ETF",
       "sector": "Global Equity",
       "account": "TFSA",
-      "shares": 648.6869,
-      "buyPrice": 40.03,
+      "shares": 650.1322,
+      "buyPrice": 40.04,
       "currency": "CAD",
       "mktPriceOverride": 0
     },
@@ -240,7 +240,7 @@
       "value": 166049
     }
   ],
-  "lastUpdated": "2026-09-28",
+  "lastUpdated": "2026-09-30",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
