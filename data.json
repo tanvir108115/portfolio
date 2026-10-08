@@ -130,16 +130,6 @@
       "mktPriceOverride": 0
     },
     {
-      "ticker": "VIG",
-      "name": "Vanguard Dividend Appreciation Index Fund ETF",
-      "sector": "ETF",
-      "account": "Regular",
-      "shares": 13.1322,
-      "buyPrice": 230.3224,
-      "currency": "USD",
-      "mktPriceOverride": 0
-    },
-    {
       "ticker": "XRE",
       "name": "iShares S&P/TSX Capped REIT Index ETF",
       "sector": "ETF",
@@ -244,7 +234,7 @@
       "value": 168656
     }
   ],
-  "lastUpdated": "2026-10-07",
+  "lastUpdated": "2026-10-08",
   "projection": {
     "contribution": 1130.58,
     "rate": 8,
