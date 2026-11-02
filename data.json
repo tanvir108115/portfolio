@@ -134,8 +134,8 @@
       "name": "iShares S&P/TSX Capped REIT Index ETF",
       "sector": "ETF",
       "account": "RRSP",
-      "shares": 2,
-      "buyPrice": 15.62,
+      "shares": 3,
+      "buyPrice": 15.57,
       "currency": "CAD",
       "mktPriceOverride": 0
     },
