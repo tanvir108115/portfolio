@@ -373,6 +373,17 @@ svg.chart{width:100%;height:100%;overflow:visible}
         </div>
         <div class="form-group"><label class="form-label">Mkt Price Override</label><input class="form-input" id="f-mktprice" type="number" step="any" placeholder="0 = auto fetch" value="0"></div>
       </div>
+
+      <!-- BUY MORE (edit mode only) -->
+      <div id="buymore-section" class="hidden" style="border-top:1px solid var(--border);margin-top:6px;padding-top:14px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px">Bought more? Auto-update average price</div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">New Shares Bought</label><input class="form-input" id="bm-shares" type="number" step="any" placeholder="0" oninput="previewBuyMore()"></div>
+          <div class="form-group"><label class="form-label">Price Paid / Share</label><input class="form-input" id="bm-price" type="number" step="any" placeholder="0.00" oninput="previewBuyMore()"></div>
+        </div>
+        <div class="ticker-preview hidden" id="bm-preview" style="margin-bottom:10px"></div>
+        <button class="btn" id="bm-apply" onclick="applyBuyMore()" disabled>Apply to Shares &amp; Buy Price</button>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn danger hidden" id="delete-btn" onclick="deleteHolding()">Delete</button>
@@ -1030,6 +1041,7 @@ function openAddModal() {
   document.getElementById('edit-index').value='';
   document.getElementById('delete-btn').classList.add('hidden');
   document.getElementById('search-section').classList.remove('hidden');
+  document.getElementById('buymore-section').classList.add('hidden');
   document.getElementById('ticker-preview').classList.add('hidden');
   document.getElementById('ticker-search').value='';
   document.getElementById('search-results').classList.add('hidden');
@@ -1043,6 +1055,8 @@ function openEditModal(idx) {
   document.getElementById('edit-index').value=idx;
   document.getElementById('delete-btn').classList.remove('hidden');
   document.getElementById('search-section').classList.add('hidden');
+  document.getElementById('buymore-section').classList.remove('hidden');
+  resetBuyMore();
   populateAccountSelect(h.account);
   document.getElementById('f-ticker').value=h.ticker;
   document.getElementById('f-name').value=h.name||'';
@@ -1071,6 +1085,41 @@ function populateAccountSelect(selected) {
   });
 }
 
+// ── BUY MORE: weighted-average cost ──────────────────────────
+function resetBuyMore() {
+  ['bm-shares','bm-price'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('bm-preview').classList.add('hidden');
+  document.getElementById('bm-apply').disabled = true;
+}
+
+function calcBuyMore() {
+  const x = parseFloat(document.getElementById('f-shares').value);
+  const y = parseFloat(document.getElementById('f-buyprice').value);
+  const a = parseFloat(document.getElementById('bm-shares').value);
+  const b = parseFloat(document.getElementById('bm-price').value);
+  if ([x, y, a, b].some(isNaN) || a <= 0 || b < 0 || x < 0) return null;
+  const total = x + a;
+  return { x, y, a, b, total, avg: (x * y + a * b) / total };
+}
+
+function previewBuyMore() {
+  const r = calcBuyMore();
+  const box = document.getElementById('bm-preview');
+  document.getElementById('bm-apply').disabled = !r;
+  if (!r) { box.classList.add('hidden'); return; }
+  box.classList.remove('hidden');
+  box.innerHTML = `<div class="tp-name">New total: ${+r.total.toFixed(4)} shares @ ${r.avg.toFixed(4)} avg</div>
+    <div style="color:var(--muted)">(${r.x} × ${r.y} + ${r.a} × ${r.b}) ÷ ${+r.total.toFixed(4)}</div>`;
+}
+
+function applyBuyMore() {
+  const r = calcBuyMore(); if (!r) return;
+  document.getElementById('f-shares').value   = +r.total.toFixed(6);
+  document.getElementById('f-buyprice').value = +r.avg.toFixed(6);
+  resetBuyMore();
+  showToast('Shares and average price updated — click Save to keep it', 'info');
+}
+
 function saveHolding() {
   const idx=document.getElementById('edit-index').value;
   const mktOverride = parseFloat(document.getElementById('f-mktprice').value) || 0;
@@ -1086,7 +1135,17 @@ function saveHolding() {
   };
   if(!h.ticker||isNaN(h.shares)||isNaN(h.buyPrice)){showToast('Ticker, shares and buy price are required','error');return;}
   if(idx!=='') portfolio.holdings[parseInt(idx)]=h;
-  else portfolio.holdings.push(h);
+  else {
+    const ex = portfolio.holdings.find(x => x.ticker === h.ticker && x.account === h.account);
+    if (ex) {
+      const total = ex.shares + h.shares;
+      const avg = (ex.shares * ex.buyPrice + h.shares * h.buyPrice) / total;
+      if (confirm(`${h.ticker} already exists in ${h.account} (${ex.shares} @ ${ex.buyPrice.toFixed(4)}).\n\nMerge into one position: ${+total.toFixed(4)} shares @ ${avg.toFixed(4)} avg?`)) {
+        ex.shares = total; ex.buyPrice = avg;
+        if (h.mktPriceOverride) ex.mktPriceOverride = h.mktPriceOverride;
+      } else portfolio.holdings.push(h);   // keep as a separate lot
+    } else portfolio.holdings.push(h);
+  }
   portfolio.lastUpdated=new Date().toISOString().slice(0,10);
   closeModal(); saveToGitHub(); renderAll();
 }
